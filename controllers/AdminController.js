@@ -1,6 +1,7 @@
 const Complaint = require('../model/Complaint');
 const Room = require('../model/Room');
 const User = require('../model/User');
+const Fine = require('../model/Fine');
 
 module.exports = {
     dashboard: async (req, res) => {
@@ -95,6 +96,46 @@ module.exports = {
             })
             return res.status(200).json({ status: 'success', data: userList });
         } catch (err) {
+            console.log(err);
+            res.status(200).json({ message: 'Internal Server Error' });
+        }
+    },
+    imposeFine: async (req, res) => {
+        try {
+            const { scholarId, amount, reason } = req.body;
+            if (req.admin === false) {
+                return res.status(200).json({ message: 'You are not authorized to impose fine' });
+            }
+            if (!scholarId || !amount || !reason) {
+                return res.status(200).json({ message: 'All fields are required' });
+            }
+            const user = await User.findOne({ scholarId: scholarId, hostelAlloted: req.userData.hostelAlloted });
+            if(!user){
+                return res.status(200).json({ message: 'User not found' });
+            }
+            const fine = new Fine({
+                scholarId,
+                hostel: req.userData.hostelAlloted,
+                amount,
+                reason
+            });
+            await fine.save();
+            return res.status(200).json({ status: 'success', message: 'Fine imposed' });
+        } catch (err) {
+            console.log(err);
+            res.status(200).json({ message: 'Internal Server Error' });
+        }
+    },
+    paidFine: async (req, res) => {
+        try{
+            if (req.admin === false) {
+                return res.status(200).json({ message: 'You are not authorized to impose fine' });
+            }
+            const user = await Fine.find({
+                hostel: req.userData.hostelAlloted,
+            })
+            return res.status(200).json({ status: 'success', fine: user });
+        }catch(err){
             console.log(err);
             res.status(200).json({ message: 'Internal Server Error' });
         }
