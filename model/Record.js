@@ -9,19 +9,15 @@ const RecordSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    reason: {
+    type: {
         type: String,
-        required: true
+        required: true,
+        enum: ['entry', 'exit']
     },
-    inTime: {
+    time: {
         type: Date,
         required: true,
         default: Date.now()
-    },
-    outTime: {
-        type: Date,
-        required: true,
-        default: 0
     }
 });
 
