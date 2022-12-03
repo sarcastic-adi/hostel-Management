@@ -6,8 +6,8 @@ const config = require('../config/config');
 module.exports = {
     register: async (req, res) => {
         try {
-            const { firstName, lastName, scholarId, email, mobileNumber, password } = req.body;
-            if (!scholarId || !email || !password || !firstName || !lastName || !mobileNumber) {
+            const { firstName, lastName, scholarId, email, mobileNumber, password, year } = req.body;
+            if (!scholarId || !email || !password || !firstName || !lastName || !mobileNumber || !year) {
                 return res.status(200).json({ message: 'Please enter all fields' });
             }
             const user = await User.findOne({
@@ -24,16 +24,18 @@ module.exports = {
                     lastName,
                     scholarId,
                     email,
+                    year,
+                    hostelAlloted: year,
                     mobileNumber,
-                    password: hash
+                    password: hash,
                 });
-                res.status(200).json({ status:"success", message: 'User added successfully', token: jwt.sign({ scholarId: scholarId }, config.encryption.secret, { expiresIn: '365d' }) });
+                res.status(200).json({ status: "success", message: 'User added successfully', token: jwt.sign({ scholarId: scholarId }, config.encryption.secret, { expiresIn: '365d' }) });
             } catch (err) {
                 console.log(err);
-                if(scholarId.length != 9){
+                if (scholarId.length != 9) {
                     return res.status(200).json({ message: 'Scholar Id must be 9 digits' });
                 }
-                if(mobileNumber.length != 10){
+                if (mobileNumber.length != 10) {
                     return res.status(200).json({ message: 'Mobile Number must be 10 digits' });
                 }
                 res.status(200).json({ message: 'Server error' });
@@ -58,7 +60,7 @@ module.exports = {
             if (!isMatch) {
                 return res.status(200).json({ message: 'Invalid credentials' });
             }
-            res.status(200).json({ status:"success",message: 'User logged in successfully', token: jwt.sign({ scholarId: user.scholarId }, config.encryption.secret, { expiresIn: '365d' }) });
+            res.status(200).json({ status: "success", message: 'User logged in successfully', token: jwt.sign({ scholarId: user.scholarId }, config.encryption.secret, { expiresIn: '365d' }) });
         } catch (err) {
             res.status(200).json({ message: 'Server error' });
         }
@@ -66,7 +68,7 @@ module.exports = {
     getUser: async (req, res) => {
         try {
             res.status(200).json({ message: 'User found', user: req.userData });
-        }catch(err){
+        } catch (err) {
             res.status(200).json({ message: 'Server error' });
         }
     },

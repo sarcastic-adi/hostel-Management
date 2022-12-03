@@ -23,6 +23,11 @@ const ComplaintSchema = new mongoose.Schema({
         required: true,
         default: 1
     },
+    hostel: {
+        type: String,
+        required: true,
+        default: 'none'
+    },
     content: {
         type: String,
         required: true

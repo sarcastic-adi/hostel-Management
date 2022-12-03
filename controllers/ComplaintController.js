@@ -11,6 +11,7 @@ module.exports = {
             const complaint = await Complaint.create({
                 scholarId,
                 holderName,
+                hostel: req.userData.hostelAlloted,
                 title,
                 category,
                 content
@@ -45,7 +46,8 @@ module.exports = {
     getComplaints: async (req, res) => {
         try{
             const complaints = await Complaint.find({
-                status: false
+                status: false,
+                hostel: req.userData.hostelAlloted
             }).sort({upvotes: -1, date: -1});
             res.status(200).json({ status:"success", complaints: complaints });
         }catch(err){

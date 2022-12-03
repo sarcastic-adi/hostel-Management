@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        validate : (value) => {
+        validate: (value) => {
             return (value.length == 9);
         }
     },
@@ -33,12 +33,21 @@ const UserSchema = new mongoose.Schema({
         default: 'student',
         enum: ['student', 'admin']
     },
+    year: {
+        type: Number,
+        required: true
+    },
     hostelAlloted: {
         type: String,
         required: true,
         unique: true,
         default: 'none',
-    },  
+    },
+    roomNumber: {
+        type: Number,
+        required: true,
+        default: 0
+    },
     mobileNumber: {
         type: String,
         required: true,
