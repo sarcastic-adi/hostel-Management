@@ -3,14 +3,15 @@ const Complaint = require('../model/Complaint');
 module.exports = {
     addComplaint: async (req, res) => {
         try{
-            const { holderName, category, content } = req.body;
-            if(!holderName || !category || !content){
+            const { title, holderName, category, content } = req.body;
+            if(!title || !holderName || !category || !content){
                 return res.status(200).json({ message: 'Please enter all fields' });
             }
             let scholarId = req.userData.scholarId;
             const complaint = await Complaint.create({
                 scholarId,
                 holderName,
+                title,
                 category,
                 content
             })
@@ -43,7 +44,9 @@ module.exports = {
     },
     getComplaints: async (req, res) => {
         try{
-            const complaints = await Complaint.find({}).sort({upvotes: -1, date: -1});
+            const complaints = await Complaint.find({
+                status: false
+            }).sort({upvotes: -1, date: -1});
             res.status(200).json({ status:"success", complaints: complaints });
         }catch(err){
             res.status(200).json({ message: 'Internal Server Error' });

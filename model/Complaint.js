@@ -9,10 +9,14 @@ const ComplaintSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    title: {
+        type: String,
+        required: true
+    },
     category: {
         type: String,
         required: true,
-        enum: ['electricity', 'mess', 'water', 'sanitation', 'other']
+        enum: ['electricity', 'mess', 'water', 'sanitation', 'others']
     },
     upvotes: {
         type: Number,
