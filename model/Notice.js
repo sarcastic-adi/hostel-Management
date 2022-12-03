@@ -9,6 +9,10 @@ const NoticeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    hostel: {
+        type: String,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now()

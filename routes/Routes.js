@@ -4,4 +4,5 @@ module.exports = (app) => {
     app.use('/room', require('./RoomRoutes'));
     app.use('/admin', require('./AdminRoutes'));
     app.use('/notice', require('./NoticeRoutes'));
+    app.use('/record', require('./RecordRoutes'));
 }

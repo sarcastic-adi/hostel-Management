@@ -16,7 +16,8 @@ module.exports = {
             }
             const notice = await Notice.create({
                 title: title,
-                description: description
+                description: description,
+                hostel: req.userData.hostelAlloted
             });
             res.status(200).json({
                 status: 'success',
@@ -30,7 +31,9 @@ module.exports = {
     },
     getNotices: async (req, res) => {
         try{
-            const notices = await Notice.find().sort({date: -1});
+            const notices = await Notice.find({
+                hostel: req.userData.hostelAlloted
+            }).sort({date: -1});
             res.status(200).json({
                 status: 'success',
                 message: 'Notices fetched successfully',
@@ -43,7 +46,9 @@ module.exports = {
     },
     topNotice: async (req, res) => {
         try{
-            const notices = await Notice.find().sort({date: -1}).limit(1);
+            const notices = await Notice.find({
+                hostel: req.userData.hostelAlloted
+            }).sort({date: -1}).limit(1);
             res.status(200).json({
                 status: 'success',
                 message: 'Notices fetched successfully',

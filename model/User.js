@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema({
             return (value.length == 9);
         }
     },
+    
     email: {
         type: String,
         required: true,

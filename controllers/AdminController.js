@@ -13,7 +13,7 @@ module.exports = {
                 paymentStatus: false,
                 hostel: req.userData.hostelAlloted
             }).count();
-            return res.status(200).json({ status:'success', complaint_count: countComplaint, room_allot_status: hostelStatus });
+            return res.status(200).json({ status: 'success', complaint_count: countComplaint, room_allot_status: hostelStatus });
         } catch (err) {
             console.log(err);
             res.status(200).json({ message: 'Internal Server Error' });
@@ -55,12 +55,12 @@ module.exports = {
                 room.paymentStatus = true;
                 room.save();
                 User.findOne({ scholarId: room.scholarId }, (err, user) => {
-                    if(err) {
+                    if (err) {
                         return res.status(200).json({ message: 'User not found' });
                     }
                     user.roomNumber = room.number;
                     user.save();
-                    return res.status(200).json({ status:"success",message: 'Room Alloted' });
+                    return res.status(200).json({ status: "success", message: 'Room Alloted' });
                 })
             });
         } catch (err) {
@@ -75,12 +75,28 @@ module.exports = {
             }
             const pendingRequests = await Room.find({
                 paymentStatus: false,
+                hostel: req.userData.hostelAlloted
             })
-            return res.status(200).json({ status: 'success', data : pendingRequests });
-        }catch (err) {
+            console.log(pendingRequests);
+            return res.status(200).json({ status: 'success', data: pendingRequests });
+        } catch (err) {
             console.log(err);
             res.status(200).json({ message: 'Internal Server Error' });
         }
 
+    },
+    userList: async (req, res) => {
+        try {
+            if (req.admin === false) {
+                return res.status(200).json({ message: 'You are not authorized to view pending requests' });
+            }
+            const userList = await User.find({
+                hostelAlloted: req.userData.hostelAlloted
+            })
+            return res.status(200).json({ status: 'success', data: userList });
+        } catch (err) {
+            console.log(err);
+            res.status(200).json({ message: 'Internal Server Error' });
+        }
     }
 }
