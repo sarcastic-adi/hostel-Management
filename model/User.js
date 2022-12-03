@@ -40,7 +40,6 @@ const UserSchema = new mongoose.Schema({
     hostelAlloted: {
         type: String,
         required: true,
-        unique: true,
         default: 'none',
     },
     roomNumber: {

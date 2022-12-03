@@ -13,15 +13,18 @@ module.exports = {
             }
             const availableRooms = await Room.find().sort({ number: -1 }).limit(1);
             const roomNumber = (availableRooms.length === 0) ? 1 : availableRooms[0].number + 1;
-            console.log(req.userData);
+            if(roomNumber > 250){
+                return res.status(200).json({ message: 'No rooms available' });
+            }
             const allotRoom = await Room.create({
                 number: roomNumber,
                 scholarId: req.userData.scholarId,
                 transactionId: req.body.transactionId,
                 paymentStatus: false,
-                hostel: req.userData.hostelAlloted
+                hostel: req.userData.hostelAlloted,
+                name: req.userData.firstName + ' ' + req.userData.lastName
             });
-            return res.status(200).json({ status:'success',message: 'Room Alloted!! Please wait untill your warden confirms your presence.', room: allotRoom });
+            return res.status(200).json({ status:'success',message: 'Request Sent!! Please wait untill your warden confirms your presence.', room: allotRoom });
         } catch (err) {
             console.log(err);
             res.status(200).json({ message: 'Internal Server Error' });

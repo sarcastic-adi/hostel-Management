@@ -5,9 +5,14 @@ const roomSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    scholarId: {
+    name:{
         type: String,
         required: true
+    },
+    scholarId: {
+        type: String,
+        required: true,
+        unique: true
     },
     transactionId: {
         type: String,

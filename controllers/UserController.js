@@ -19,7 +19,7 @@ module.exports = {
             const salt = await bcrypt.genSalt(config.encryption.saltRounds);
             const hash = await bcrypt.hash(password, salt);
             try {
-                await User.create({
+                let user = await User.create({
                     firstName,
                     lastName,
                     scholarId,
@@ -29,7 +29,8 @@ module.exports = {
                     mobileNumber,
                     password: hash,
                 });
-                res.status(200).json({ status: "success", message: 'User added successfully', token: jwt.sign({ scholarId: scholarId }, config.encryption.secret, { expiresIn: '365d' }) });
+                user.password = undefined;
+                res.status(200).json({ status: "success",user, message: 'User added successfully', token: jwt.sign({ scholarId: scholarId }, config.encryption.secret, { expiresIn: '365d' }) });
             } catch (err) {
                 console.log(err);
                 if (scholarId.length != 9) {
@@ -60,7 +61,8 @@ module.exports = {
             if (!isMatch) {
                 return res.status(200).json({ message: 'Invalid credentials' });
             }
-            res.status(200).json({ status: "success", message: 'User logged in successfully', token: jwt.sign({ scholarId: user.scholarId }, config.encryption.secret, { expiresIn: '365d' }) });
+            user.password = undefined;
+            res.status(200).json({ status: "success",user, message: 'User logged in successfully', token: jwt.sign({ scholarId: user.scholarId }, config.encryption.secret, { expiresIn: '365d' }) });
         } catch (err) {
             res.status(200).json({ message: 'Server error' });
         }

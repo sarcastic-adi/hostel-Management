@@ -12,7 +12,8 @@ module.exports = async (req, res, next) => {
         req.userData.password = undefined;
         if (req.userData.userType === 'admin') {
             req.admin = true;
-        }
+        }else
+            req.admin = false;
         next();
     } catch (error) {
         return res.status(401).json({ message: 'Auth failed' });
