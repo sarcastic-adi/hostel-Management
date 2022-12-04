@@ -39,27 +39,21 @@
 <script type="text/javascript">
     let lastMessage = "";
     function onScanSuccess(qrCodeMessage) {
-        console.log(qrCodeMessage,lastMessage,lastMessage == qrCodeMessage);
-        if (lastMessage == qrCodeMessage) {
-            return;
-        } else {
-            document.getElementById('result').innerHTML = '<span class="result">' + "QR Scan Successfull" + '</span>';
-            alert(lastMessage == qrCodeMessage);
-            document.getElementById('reader').innerHTML = "";
+        document.getElementById('result').innerHTML = '<span class="result">' + "QR Scan Successfull" + '</span>';
+        document.getElementById('reader').innerHTML = "";
 
-            (async () => {
-                const rawResponse = await fetch('/updateRecord', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(JSON.parse(qrCodeMessage))
-                });
-                const content = await rawResponse.json();
-                console.log(content);
-            })();
-        }
+        (async () => {
+            const rawResponse = await fetch('/updateRecord', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(JSON.parse(qrCodeMessage))
+            });
+            const content = await rawResponse.json();
+            console.log(content);
+        })();
     }
 
     function onScanError(errorMessage) {
