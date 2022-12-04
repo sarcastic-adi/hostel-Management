@@ -44,7 +44,7 @@
             return;
         } else {
             document.getElementById('result').innerHTML = '<span class="result">' + "QR Scan Successfull" + '</span>';
-            lastMessage = qrCodeMessage;
+            alert(lastMessage == qrCodeMessage);
             (async () => {
                 const rawResponse = await fetch('/updateRecord', {
                     method: 'POST',
