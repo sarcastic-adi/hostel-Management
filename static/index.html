@@ -37,9 +37,13 @@
 
 </body>
 <script type="text/javascript">
+    let suc = false;
     function onScanSuccess(qrCodeMessage) {
+        if(suc){
+            return;
+        }
         document.getElementById('result').innerHTML = '<span class="result">' + "QR Scan Successfull" + '</span>';
-        
+        suc = true;
         (async () => {
             const rawResponse = await fetch('/updateRecord', {
                 method: 'POST',
@@ -50,13 +54,9 @@
                 body: JSON.stringify(JSON.parse(qrCodeMessage))
             });
             const content = await rawResponse.json();
-            
             window.location.reload();
             console.log(content);
         })();
-        setTimeout(function() {
-            document.getElementById('result').innerHTML = "Result Here";
-        }, 5000);
     }
 
     function onScanError(errorMessage) {

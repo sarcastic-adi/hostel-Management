@@ -21,6 +21,8 @@ app.get('/', (req, res) => {
 
 const Record = require('./model/Record');
 app.post('/updateRecord', async (req, res) => {
+    const date = new Date();
+    
     const data = await Record.create({
         scholarId: req.body.data.scholarId,
         hostel: req.body.data.hostelAlloted,
