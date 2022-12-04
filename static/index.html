@@ -37,29 +37,30 @@
 
 </body>
 <script type="text/javascript">
-    let suc = false;
+    let lastMessage = "";
     function onScanSuccess(qrCodeMessage) {
-        if(suc){
+        if (lastMessage === qrCodeMessage) {
             return;
+        } else {
+            document.getElementById('result').innerHTML = '<span class="result">' + "QR Scan Successfull" + '</span>';
+            lastMessage = qrCodeMessage;
+            (async () => {
+                const rawResponse = await fetch('/updateRecord', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(JSON.parse(qrCodeMessage))
+                });
+                const content = await rawResponse.json();
+                console.log(content);
+            })();
         }
-        document.getElementById('result').innerHTML = '<span class="result">' + "QR Scan Successfull" + '</span>';
-        html5QrcodeScanner.clear();
-        (async () => {
-            const rawResponse = await fetch('/updateRecord', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(JSON.parse(qrCodeMessage))
-            });
-            const content = await rawResponse.json();
-            console.log(content);
-        })();
     }
 
     function onScanError(errorMessage) {
-        
+
     }
 
     var html5QrcodeScanner = new Html5QrcodeScanner(
