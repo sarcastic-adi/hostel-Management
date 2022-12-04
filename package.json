@@ -5,6 +5,11 @@
   "repository": "https://github.com/Mihir1703/B06_404_not_found.git",
   "author": "Mehra-jay <mehraajayy11@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
