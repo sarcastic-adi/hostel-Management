@@ -27,6 +27,10 @@ app.post('/updateRecord', async (req, res) => {
     res.status(200).json({ message: 'Record updated successfully' });
 });
 
+app.get('/test', (req, res) => {
+    res.send('Hello World');
+});
+
 app.listen(config.port, () => {
     console.log(`Server running on port ${config.port}`);
 });
