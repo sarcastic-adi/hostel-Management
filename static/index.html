@@ -39,7 +39,8 @@
 <script type="text/javascript">
     let lastMessage = "";
     function onScanSuccess(qrCodeMessage) {
-        if (lastMessage === qrCodeMessage) {
+        console.log(qrCodeMessage,lastMessage,lastMessage == qrCodeMessage);
+        if (lastMessage == qrCodeMessage) {
             return;
         } else {
             document.getElementById('result').innerHTML = '<span class="result">' + "QR Scan Successfull" + '</span>';
