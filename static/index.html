@@ -43,7 +43,7 @@
             return;
         }
         document.getElementById('result').innerHTML = '<span class="result">' + "QR Scan Successfull" + '</span>';
-        document.getElementById('reader').style.display = "none";
+        html5QrcodeScanner.clear();
         (async () => {
             const rawResponse = await fetch('/updateRecord', {
                 method: 'POST',
