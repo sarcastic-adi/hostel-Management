@@ -15,6 +15,9 @@ mongoose.connect(config.db.url, { useNewUrlParser: true, useUnifiedTopology: tru
 require('./routes/Routes')(app)
 app.use(express.static('static'));
 
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/static/index.html');
+});
 
 const Record = require('./model/Record');
 app.post('/updateRecord', async (req, res) => {
